@@ -1,6 +1,5 @@
 const express = require("express");
 
-// Import routes
 const recipeRoutes = require("./routes/recipeRoutes");
 
 const app = express();
@@ -14,10 +13,9 @@ app.get("/", (req, res) => {
   res.send("Welcome to Recipe Manager API");
 });
 
-// Use recipe routes
+// Recipe routes
 app.use("/recipes", recipeRoutes);
 
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
