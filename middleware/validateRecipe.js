@@ -26,4 +26,4 @@ if (errors.length > 0) {
     }
     next();
 }
-export default validateRecipe; 
+export default validateRecipe;
