@@ -11,7 +11,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to Recipe Manager API");
 });
 
-app.get("/recipes", recipeRoutes);
+app.use("/recipes", recipeRoutes);
 
 
 app.listen(PORT, () => {
