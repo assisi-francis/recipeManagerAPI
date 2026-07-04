@@ -3,11 +3,7 @@ const validateRecipe = (req, res, next) => {
         return res.status(400).json({ error: 'Request body is missing or empty.' });
     }
     const errors = [];
-    const { id, name, category, ingredients, instructions } = req.body;
-// checking if the id field is valid
-    if ( typeof id !== 'number') {
-        errors.push('Invalid or missing recipe ID.');
-    }
+    const {  name, category, ingredients, instructions } = req.body;
     //checking if the name field is valid
     if (typeof name !== 'string' || name.trim()) {
         errors.push('Name is required and must be a text string.');
