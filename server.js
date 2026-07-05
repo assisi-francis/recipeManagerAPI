@@ -1,7 +1,6 @@
 import express from "express";
 import recipeRoutes from "./routes/recipeRoutes.js";
 
-
 const app = express();
 const PORT = 3000;
 
@@ -15,6 +14,5 @@ app.use("/recipes", recipeRoutes);
 
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
-
