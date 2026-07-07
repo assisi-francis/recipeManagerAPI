@@ -2,7 +2,6 @@
 
 import fs from 'fs';
 import path from 'path';
-import { randomUUID } from 'crypto';
 
 const recipesFile = path.join(process.cwd(), 'recipes.json');
 
@@ -44,13 +43,13 @@ export const getAllRecipes = (req, res) => {
     const keyword = q.toLowerCase();
 
     recipes = recipes.filter(recipe =>
-      recipe.title.toLowerCase().includes(keyword) ||
+      recipe.name.toLowerCase().includes(keyword) ||
       recipe.instructions.toLowerCase().includes(keyword) ||
       recipe.ingredients.some(item =>
         item.toLowerCase().includes(keyword)
       ) ||
-      (recipe.cuisine &&
-        recipe.cuisine.toLowerCase().includes(keyword))
+      (recipe.category &&
+        recipe.category.toLowerCase().includes(keyword))
     );
   }
 
@@ -61,7 +60,9 @@ export const getAllRecipes = (req, res) => {
 export const getRecipeById = (req, res) => {
   const recipes = readRecipes();
 
-  const recipe = recipes.find(recipe => recipe.id === req.params.id);
+  const recipe = recipes.find(
+    recipe => recipe.id === parseInt(req.params.id)
+  );
 
   if (!recipe) {
     return res.status(404).json({
@@ -78,11 +79,14 @@ export const createRecipe = (req, res) => {
   const now = new Date().toISOString();
 
   const newRecipe = {
-    id: randomUUID(),
-    title: req.body.title,
+    id:
+      recipes.length > 0
+        ? Math.max(...recipes.map(recipe => recipe.id)) + 1
+        : 1,
+    name: req.body.name,
     ingredients: req.body.ingredients,
     instructions: req.body.instructions,
-    cuisine: req.body.cuisine || null,
+    category: req.body.category || null,
     prepTimeMinutes: req.body.prepTimeMinutes || null,
     servings: req.body.servings || null,
     createdAt: now,
@@ -100,7 +104,7 @@ export const updateRecipe = (req, res) => {
   const recipes = readRecipes();
 
   const index = recipes.findIndex(
-    recipe => recipe.id === req.params.id
+    recipe => recipe.id === parseInt(req.params.id)
   );
 
   if (index === -1) {
@@ -111,13 +115,16 @@ export const updateRecipe = (req, res) => {
 
   recipes[index] = {
     ...recipes[index],
-    title: req.body.title ?? recipes[index].title,
+    name: req.body.name ?? recipes[index].name,
     ingredients: req.body.ingredients ?? recipes[index].ingredients,
-    instructions: req.body.instructions ?? recipes[index].instructions,
-    cuisine: req.body.cuisine ?? recipes[index].cuisine,
+    instructions:
+      req.body.instructions ?? recipes[index].instructions,
+    category: req.body.category ?? recipes[index].category,
     prepTimeMinutes:
-      req.body.prepTimeMinutes ?? recipes[index].prepTimeMinutes,
-    servings: req.body.servings ?? recipes[index].servings,
+      req.body.prepTimeMinutes ??
+      recipes[index].prepTimeMinutes,
+    servings:
+      req.body.servings ?? recipes[index].servings,
     updatedAt: new Date().toISOString()
   };
 
@@ -131,7 +138,7 @@ export const deleteRecipe = (req, res) => {
   const recipes = readRecipes();
 
   const index = recipes.findIndex(
-    recipe => recipe.id === req.params.id
+    recipe => recipe.id === parseInt(req.params.id)
   );
 
   if (index === -1) {
