@@ -1,8 +1,4 @@
 {
-<<<<<<< HEAD
-  "dependencies": {
-    "express": "^5.2.1"
-=======
   "name": "recipe-manager",
   "version": "1.0.0",
   "type": "module",
@@ -21,6 +17,5 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
->>>>>>> 44cebe499b41801689662daad54dd87c10d877dd
   }
 }
