@@ -27,7 +27,10 @@ function writeRecipes(recipes) {
 // GET /recipes?q=rice
 export const getAllRecipes = (req, res) => {
   let recipes = readRecipes();
-  const { ingredient, q } = req.query;
+  
+  // Ensure query parameters are strings (take the first one if an array is passed)
+  const ingredient = Array.isArray(req.query.ingredient) ? req.query.ingredient[0] : req.query.ingredient;
+  const q = Array.isArray(req.query.q) ? req.query.q[0] : req.query.q;
 
   // Search by ingredient
   if (ingredient) {
